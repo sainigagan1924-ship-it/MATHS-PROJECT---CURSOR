@@ -50,16 +50,16 @@ Serve the `client/dist` folder with any static host and point `VITE_API_URL` (at
 
 ## Deploy on Vercel ([Vercel dashboard](https://vercel.com))
 
-This repo includes `vercel.json` so the **Vite frontend** and **Express API** (as one serverless function) deploy on the same origin — the browser calls `/api/...` with no extra `VITE_API_URL`.
+`vercel.json` and `api/` are at the **repository root** (parent of this folder). The **Vite** build and **Express** serverless handler deploy on the same origin (`/api/...` needs no `VITE_API_URL`).
 
-1. In [Vercel](https://vercel.com/new), **Import** your GitHub repository.
-2. Set **Root Directory** to `stats-calculator-platform` (not the monorepo root).
+1. In [Vercel](https://vercel.com/new), **Import** the GitHub repository.
+2. **Root Directory** — leave **empty** (repository root). If you previously set `stats-calculator-platform`, clear it and redeploy.
 3. **Environment variables** (Production + Preview as needed):
    - `MONGODB_URI` — MongoDB Atlas connection string (optional; saves disabled if empty).
-   - `CLIENT_ORIGIN` — Your live site URL(s), comma-separated, e.g. `https://your-app.vercel.app` (optional; `VERCEL_URL` is added automatically for CORS on each deployment).
-4. Deploy. Vercel runs `installCommand` (client + server deps), `buildCommand` (Vite build), serves `client/dist`, and routes `/api/*` to `api/index.js`.
+   - `CLIENT_ORIGIN` — Your live URL(s), comma-separated (optional; `VERCEL_URL` is added for CORS automatically).
+4. Deploy. Vercel runs root `npm ci`, installs client + server, builds `stats-calculator-platform/client`, serves `client/dist`, and routes `/api/*` to `api/index.js`.
 
-Local Vercel emulation: install [Vercel CLI](https://vercel.com/docs/cli), then from `stats-calculator-platform/` run `vercel dev`.
+Local: from the **repo root**, run `vercel dev` ([Vercel CLI](https://vercel.com/docs/cli)).
 
 ## API overview
 
@@ -85,9 +85,10 @@ If you do **not** use Vercel’s combined static + serverless setup:
 ## Project layout
 
 ```
+repo root/
+├── vercel.json      # Vercel (see parent README)
+├── api/index.js     # Serverless Express entry
 stats-calculator-platform/
-├── api/             # Vercel serverless entry (Express)
-├── vercel.json
 ├── client/          # Vite + React
 │   └── src/
 │       ├── components/   # Charts, KaTeX, tables, results

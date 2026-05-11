@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm ci && npm ci --prefix stats-calculator-platform/client && npm ci --prefix stats-calculator-platform/server",
+  "buildCommand": "npm run build --prefix stats-calculator-platform/client",
+  "outputDirectory": "stats-calculator-platform/client/dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

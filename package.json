@@ -1,0 +1,9 @@
+{
+  "name": "maths-project-cursor",
+  "private": true,
+  "type": "module",
+  "description": "Vercel resolves serverless deps from this file; sub-apps live in stats-calculator-platform/",
+  "dependencies": {
+    "serverless-http": "^3.2.0"
+  }
+}

@@ -1,0 +1,4 @@
+stats-calculator-platform/client/node_modules
+stats-calculator-platform/server/node_modules
+**/.env
+.git
