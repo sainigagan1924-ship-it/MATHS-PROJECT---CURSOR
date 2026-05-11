@@ -48,6 +48,19 @@ npm run preview   # optional local preview of static build
 
 Serve the `client/dist` folder with any static host and point `VITE_API_URL` (at build time) to your public API URL, or put the API behind the same origin reverse proxy.
 
+## Deploy on Vercel ([Vercel dashboard](https://vercel.com))
+
+This repo includes `vercel.json` so the **Vite frontend** and **Express API** (as one serverless function) deploy on the same origin — the browser calls `/api/...` with no extra `VITE_API_URL`.
+
+1. In [Vercel](https://vercel.com/new), **Import** your GitHub repository.
+2. Set **Root Directory** to `stats-calculator-platform` (not the monorepo root).
+3. **Environment variables** (Production + Preview as needed):
+   - `MONGODB_URI` — MongoDB Atlas connection string (optional; saves disabled if empty).
+   - `CLIENT_ORIGIN` — Your live site URL(s), comma-separated, e.g. `https://your-app.vercel.app` (optional; `VERCEL_URL` is added automatically for CORS on each deployment).
+4. Deploy. Vercel runs `installCommand` (client + server deps), `buildCommand` (Vite build), serves `client/dist`, and routes `/api/*` to `api/index.js`.
+
+Local Vercel emulation: install [Vercel CLI](https://vercel.com/docs/cli), then from `stats-calculator-platform/` run `vercel dev`.
+
 ## API overview
 
 | Method | Path | Description |
@@ -60,7 +73,9 @@ Serve the `client/dist` folder with any static host and point `VITE_API_URL` (at
 | DELETE | `/api/saved/:id` | Delete saved item |
 | GET | `/api/saved/share/:token` | Load shared snapshot |
 
-## Deployment (outline)
+## Deployment (other hosts)
+
+If you do **not** use Vercel’s combined static + serverless setup:
 
 1. Deploy MongoDB (Atlas recommended) and set `MONGODB_URI`.
 2. Deploy API (e.g. Railway, Render, Fly.io): set env vars, `npm install`, `npm start` in `server/`.
@@ -71,6 +86,8 @@ Serve the `client/dist` folder with any static host and point `VITE_API_URL` (at
 
 ```
 stats-calculator-platform/
+├── api/             # Vercel serverless entry (Express)
+├── vercel.json
 ├── client/          # Vite + React
 │   └── src/
 │       ├── components/   # Charts, KaTeX, tables, results
